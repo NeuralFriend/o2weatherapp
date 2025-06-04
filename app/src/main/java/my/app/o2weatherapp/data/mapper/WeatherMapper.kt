@@ -7,7 +7,7 @@ import my.app.o2weatherapp.domain.model.WeatherInfo
 
 fun CurrentWeatherDto.toDomain(): WeatherInfo {
     return WeatherInfo(
-        city = cityName,
+        name = cityName,
         temperature = main.temp,
         humidity = main.humidity,
         description = weather.firstOrNull()?.description.orEmpty(),

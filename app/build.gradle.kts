@@ -56,6 +56,14 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation(libs.androidx.navigation.compose)
 
+    implementation("com.google.accompanist:accompanist-permissions:0.34.0")
+
+
+    // Coil
+    implementation(libs.coil.kt.coil.compose)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+
     // Navigation Compose
     implementation("androidx.navigation:navigation-compose:2.8.9")
     implementation(libs.androidx.hilt.navigation.compose)
