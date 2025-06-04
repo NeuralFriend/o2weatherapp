@@ -4,9 +4,10 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import jakarta.inject.Singleton
 import my.app.o2weatherapp.data.repository.WeatherRepositoryImpl
 import my.app.o2weatherapp.domain.repository.WeatherRepository
+import javax.inject.Singleton
+
 
 @Module
 @InstallIn(SingletonComponent::class)
