@@ -1,31 +1,38 @@
 package my.app.o2weatherapp.ui.components
 
-import androidx.compose.material3.Text
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun RequestLocationPermission(
-    onPermissionGranted: () -> Unit
+    forceRequest: Boolean = false,
+    onPermissionGranted: () -> Unit,
+    onPermissionDenied: () -> Unit = {}
 ) {
-    val permissionState = rememberPermissionState(permission = android.Manifest.permission.ACCESS_FINE_LOCATION)
+    var permissionRequested by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
-        if (!permissionState.status.isGranted) {
-            permissionState.launchPermissionRequest()
-        } else {
-            onPermissionGranted()
+    val locationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { granted ->
+            if (granted) {
+                onPermissionGranted()
+            } else {
+                onPermissionDenied()
+            }
         }
-    }
+    )
 
-    if (permissionState.status.isGranted) {
-        onPermissionGranted()
-    } else {
-        // Можешь показать UI с просьбой выдать разрешение
-        Text("Для работы приложения необходимо разрешение на геолокацию.")
+    LaunchedEffect(forceRequest) {
+        if (!permissionRequested || forceRequest) {
+            locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            permissionRequested = true
+        }
     }
 }

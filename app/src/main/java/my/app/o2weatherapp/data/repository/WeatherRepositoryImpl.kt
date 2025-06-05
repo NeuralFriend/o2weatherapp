@@ -1,7 +1,10 @@
 package my.app.o2weatherapp.data.repository
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Stable
 import my.app.o2weatherapp.data.mapper.toDomain
+import my.app.o2weatherapp.data.mapper.toDomainList
 import my.app.o2weatherapp.data.remote.WeatherApi
 import my.app.o2weatherapp.domain.model.ForecastDay
 import my.app.o2weatherapp.domain.model.WeatherInfo
@@ -22,7 +25,10 @@ class WeatherRepositoryImpl @Inject constructor(
         return api.getCurrentWeather(lat, lon, apiKey).toDomain()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getWeeklyForecast(lat: Double, lon: Double): List<ForecastDay> {
-        return api.getWeeklyForecast(lat, lon, apiKey = apiKey).days.map { it.toDomain() }
+        return api.getForecast(lat, lon, apiKey = apiKey)
+            .list
+            .toDomainList()
     }
 }

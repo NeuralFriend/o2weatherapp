@@ -9,15 +9,16 @@ interface WeatherApi {
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
         @Query("appid") apiKey: String,
-        @Query("units") units: String = "metric"
+        @Query("units") units: String = "metric",
+        @Query("lang") lang: String = "ru"
     ): CurrentWeatherDto
 
-    @GET("forecast/daily")
-    suspend fun getWeeklyForecast(
+    @GET("forecast")
+    suspend fun getForecast(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
-        @Query("cnt") days: Int = 7,
         @Query("appid") apiKey: String,
-        @Query("units") units: String = "metric"
-    ): WeeklyForecastDto
+        @Query("units") units: String = "metric",
+        @Query("lang") lang: String = "ru"
+    ): ForecastListDto
 }
